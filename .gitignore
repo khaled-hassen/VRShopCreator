@@ -51,3 +51,6 @@ Session.vim
 .vs
 .idea
 .vsconfig
+
+Plugins/Developer
+Plugins/Developer/*
