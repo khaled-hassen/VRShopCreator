@@ -49,14 +49,14 @@ namespace Player.Controllers.Scripts
         {
             teleportationProvider.enabled = false;
             teleportationController.enabled = false;
-            teleportationManager.IsTeleportationDisabled = true;
+            teleportationManager.isTeleportationDisabled = true;
         }
 
         private void OnRightGrabExited(SelectExitEventArgs args)
         {
             teleportationProvider.enabled = true;
             teleportationController.enabled = true;
-            teleportationManager.IsTeleportationDisabled = false;
+            teleportationManager.isTeleportationDisabled = false;
         }
     }
 }

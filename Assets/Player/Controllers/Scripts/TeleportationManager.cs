@@ -14,7 +14,7 @@ namespace Player.Controllers.Scripts
         private bool _isTeleporting;
         private XRInteractorLineVisual _rayInteractorLineVisual;
 
-        public bool IsTeleportationDisabled { get; set; }
+        public bool isTeleportationDisabled { get; set; }
 
         // Start is called before the first frame update
         private void Start()
@@ -40,14 +40,14 @@ namespace Player.Controllers.Scripts
 
         private void OnTeleportActivate(InputAction.CallbackContext ctx)
         {
-            if (IsTeleportationDisabled) return;
+            if (isTeleportationDisabled) return;
             ToggleRayInteractor(true);
             _isTeleporting = true;
         }
 
         private void OnTeleportCancel(InputAction.CallbackContext ctx)
         {
-            if (IsTeleportationDisabled) return;
+            if (isTeleportationDisabled) return;
             if (!_isTeleporting) return;
             ToggleRayInteractor(false);
             _isTeleporting = false;
@@ -55,7 +55,7 @@ namespace Player.Controllers.Scripts
 
         private void OnTeleportationEnded(LocomotionSystem system)
         {
-            if (IsTeleportationDisabled) return;
+            if (isTeleportationDisabled) return;
             _isTeleporting = false;
             ToggleRayInteractor(false);
         }
