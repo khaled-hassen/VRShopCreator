@@ -20,7 +20,7 @@ namespace Player.Controllers.Scripts
 
 
         // Start is called before the first frame update
-        private void Start()
+        private void Awake()
         {
             leftDirectInteractor.selectEntered.AddListener(OnLeftGrabEntered);
             leftDirectInteractor.selectExited.AddListener(OnLeftGrabExited);
