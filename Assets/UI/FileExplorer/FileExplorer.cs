@@ -13,6 +13,8 @@ namespace UI.FileExplorer
         [SerializeField] private Sprite folderSprite;
         [SerializeField] private Sprite fileSprite;
         [SerializeField] private GameObject rowPrefab;
+        [SerializeField] private TextMeshProUGUI locationText;
+        [SerializeField] private int textCharacterLimit = 27;
         private readonly int _fileWidth = 88;
         private readonly int _folderWidth = 140;
         private readonly int _itemHeight = 100;
@@ -23,7 +25,15 @@ namespace UI.FileExplorer
             string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string[] folders = Directory.GetDirectories(documents);
             string[] files = Directory.GetFiles(documents);
+
+            UpdateLocationText(documents);
             RenderDirectoryContent(folders, files);
+        }
+
+        private void UpdateLocationText(string path)
+        {
+            path = path.Replace(Path.DirectorySeparatorChar, '/');
+            locationText.text = path.Length > textCharacterLimit ? "..." + path.Substring(path.Length - textCharacterLimit + 3) : path;
         }
 
         private void RenderDirectoryContent(string[] folders, string[] files)
