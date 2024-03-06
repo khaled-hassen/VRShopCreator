@@ -19,21 +19,22 @@ namespace UI.FileExplorer
         private readonly int _folderWidth = 140;
         private readonly int _itemHeight = 100;
         private readonly int _itemsPerRow = 5;
+        private string _currentPath;
 
-        public override void LoadUI()
+        public override void LoadUI() => RenderScreenContent(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+
+        private void RenderScreenContent(string path)
         {
-            string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string[] folders = Directory.GetDirectories(documents);
-            string[] files = Directory.GetFiles(documents);
+            _currentPath = path;
+            string[] folders = Directory.GetDirectories(_currentPath);
+            string[] files = Directory.GetFiles(_currentPath);
 
-            UpdateLocationText(documents);
+            path = _currentPath.Replace(Path.DirectorySeparatorChar, '/');
+            locationText.text = path.Length > textCharacterLimit
+                ? "..." + path.Substring(path.Length - textCharacterLimit + 3)
+                : path;
+
             RenderDirectoryContent(folders, files);
-        }
-
-        private void UpdateLocationText(string path)
-        {
-            path = path.Replace(Path.DirectorySeparatorChar, '/');
-            locationText.text = path.Length > textCharacterLimit ? "..." + path.Substring(path.Length - textCharacterLimit + 3) : path;
         }
 
         private void RenderDirectoryContent(string[] folders, string[] files)
@@ -55,10 +56,10 @@ namespace UI.FileExplorer
             }
         }
 
-        private (Sprite sprite, int width, string title) GetDirectoryItemData(int index, string[] folders, string[] files)
+        private (Sprite sprite, int width, string path) GetDirectoryItemData(int index, string[] folders, string[] files)
         {
-            if (index < folders.Length) return (folderSprite, _folderWidth, Path.GetFileName(folders[index]));
-            if (index < folders.Length + files.Length) return (fileSprite, _fileWidth, Path.GetFileName(files[index - folders.Length]));
+            if (index < folders.Length) return (folderSprite, _folderWidth, folders[index]);
+            if (index < folders.Length + files.Length) return (fileSprite, _fileWidth, files[index - folders.Length]);
             return (null, 0, "");
         }
 
@@ -69,11 +70,11 @@ namespace UI.FileExplorer
                 .Select(index => GetDirectoryItemData(index, folders, files))
                 .Where(item => item.sprite is not null)
                 .ToList()
-                .ForEach(item => RenderDirectoryItem(panelInstance, item.title, item.sprite, item.width));
+                .ForEach(item => RenderDirectoryItem(panelInstance, item.path, item.sprite, item.width));
             Canvas.ForceUpdateCanvases();
         }
 
-        private void RenderDirectoryItem(GameObject parent, string title, Sprite sprite, int width)
+        private void RenderDirectoryItem(GameObject parent, string path, Sprite sprite, int width)
         {
             var itemContainer = new GameObject("ItemContainer");
             itemContainer.transform.SetParent(parent.transform, false);
@@ -98,7 +99,7 @@ namespace UI.FileExplorer
             textObject.transform.SetParent(itemContainer.transform, false);
 
             var text = textObject.AddComponent<TextMeshProUGUI>();
-            text.text = title;
+            text.text = Path.GetFileName(path);
             text.fontSize = 20;
             text.alignment = TextAlignmentOptions.Center;
             text.fontStyle = FontStyles.Bold;
@@ -109,6 +110,26 @@ namespace UI.FileExplorer
 
             var contentFitter = itemContainer.AddComponent<ContentSizeFitter>();
             contentFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            var button = itemContainer.AddComponent<Button>();
+            button.onClick.AddListener(() => OnItemClick(path));
+        }
+
+        private void UpdateScreenContent(string path)
+        {
+            foreach (Transform child in contentContainer.transform) Destroy(child.gameObject);
+            RenderScreenContent(path);
+        }
+
+        private void OnItemClick(string path)
+        {
+            if (Directory.Exists(path)) UpdateScreenContent(path);
+        }
+
+        public void OnBackClick()
+        {
+            string parentPath = Directory.GetParent(_currentPath)?.FullName;
+            if (parentPath is not null) UpdateScreenContent(parentPath);
         }
     }
 }
