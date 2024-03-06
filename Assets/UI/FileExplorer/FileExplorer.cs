@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,11 +28,6 @@ namespace UI.FileExplorer
 
         private void RenderDirectoryContent(string[] folders, string[] files)
         {
-            foreach (string folder in folders)
-                Debug.Log(folder);
-            foreach (string file in files)
-                Debug.Log(file);
-
             int totalItems = folders.Length + files.Length;
             int rows = (totalItems + _itemsPerRow - 1) / _itemsPerRow; // Calculate the total number of rows needed
 
@@ -42,37 +38,30 @@ namespace UI.FileExplorer
                 localPosition = new Vector3(localPosition.x, localPosition.y, 0f);
                 panelInstance.transform.localPosition = localPosition;
 
-                for (var j = 0; j < _itemsPerRow; j++)
-                {
-                    int index = i * _itemsPerRow + j;
-                    if (index >= totalItems) break;
-
-                    Sprite sprite = null;
-                    var width = 0;
-                    var title = "";
-
-                    if (index < folders.Length)
-                    {
-                        sprite = folderSprite;
-                        width = _folderWidth;
-                        title = Path.GetFileName(folders[index]);
-                    }
-                    else if (index < folders.Length + files.Length)
-                    {
-                        sprite = fileSprite;
-                        width = _fileWidth;
-                        title = Path.GetFileName(files[index - folders.Length]);
-                    }
-
-                    if (sprite is not null)
-                        RenderDirectoryItem(panelInstance, title, sprite, width);
-                }
+                RenderRowItems(folders, files, i, totalItems, panelInstance);
 
                 var contentFitter = panelInstance.AddComponent<ContentSizeFitter>();
                 contentFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             }
         }
 
+        private (Sprite sprite, int width, string title) GetDirectoryItemData(int index, string[] folders, string[] files)
+        {
+            if (index < folders.Length) return (folderSprite, _folderWidth, Path.GetFileName(folders[index]));
+            if (index < folders.Length + files.Length) return (fileSprite, _fileWidth, Path.GetFileName(files[index - folders.Length]));
+            return (null, 0, "");
+        }
+
+        private void RenderRowItems(string[] folders, string[] files, int rowIndex, int totalItems, GameObject panelInstance)
+        {
+            Enumerable.Range(rowIndex * _itemsPerRow, _itemsPerRow)
+                .TakeWhile(index => index < totalItems)
+                .Select(index => GetDirectoryItemData(index, folders, files))
+                .Where(item => item.sprite is not null)
+                .ToList()
+                .ForEach(item => RenderDirectoryItem(panelInstance, item.title, item.sprite, item.width));
+            Canvas.ForceUpdateCanvases();
+        }
 
         private void RenderDirectoryItem(GameObject parent, string title, Sprite sprite, int width)
         {
@@ -89,10 +78,6 @@ namespace UI.FileExplorer
             verticalLayoutGroup.childForceExpandWidth = true;
             verticalLayoutGroup.childForceExpandHeight = false;
 
-
-            var contentFitter = itemContainer.AddComponent<ContentSizeFitter>();
-            contentFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-
             var imageObject = new GameObject("Image");
             imageObject.transform.SetParent(itemContainer.transform, false);
             var image = imageObject.AddComponent<Image>();
@@ -101,12 +86,19 @@ namespace UI.FileExplorer
 
             var textObject = new GameObject("Text");
             textObject.transform.SetParent(itemContainer.transform, false);
+
             var text = textObject.AddComponent<TextMeshProUGUI>();
             text.text = title;
             text.fontSize = 20;
             text.alignment = TextAlignmentOptions.Center;
             text.fontStyle = FontStyles.Bold;
             text.font = font;
+
+            var textContent = textObject.AddComponent<ContentSizeFitter>();
+            textContent.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            var contentFitter = itemContainer.AddComponent<ContentSizeFitter>();
+            contentFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
         }
     }
 }
