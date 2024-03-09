@@ -25,9 +25,12 @@ namespace UI.FileExplorer
 
         private void RenderScreenContent(string path)
         {
+            var supportedFileTypes = "fbx";
             _currentPath = path;
             string[] folders = Directory.GetDirectories(_currentPath);
-            string[] files = Directory.GetFiles(_currentPath);
+            string[] files = Directory.GetFiles(_currentPath)
+                .Where(file => supportedFileTypes.Contains(Path.GetExtension(file).TrimStart('.').ToLower()))
+                .ToArray();
 
             path = _currentPath.Replace(Path.DirectorySeparatorChar, '/');
             locationText.text = path.Length > textCharacterLimit
@@ -54,6 +57,8 @@ namespace UI.FileExplorer
                 var contentFitter = panelInstance.AddComponent<ContentSizeFitter>();
                 contentFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             }
+
+            Canvas.ForceUpdateCanvases();
         }
 
         private (Sprite sprite, int width, string path) GetDirectoryItemData(int index, string[] folders, string[] files)
@@ -80,20 +85,22 @@ namespace UI.FileExplorer
             itemContainer.transform.SetParent(parent.transform, false);
 
             var rectTransform = itemContainer.AddComponent<RectTransform>();
-            rectTransform.sizeDelta = new Vector2(width, 0);
+            rectTransform.sizeDelta = new Vector2(_folderWidth, 0);
 
             var verticalLayoutGroup = itemContainer.AddComponent<VerticalLayoutGroup>();
             verticalLayoutGroup.spacing = 12;
-            verticalLayoutGroup.childControlWidth = true;
+            verticalLayoutGroup.childControlWidth = false;
             verticalLayoutGroup.childControlHeight = false;
             verticalLayoutGroup.childForceExpandWidth = true;
             verticalLayoutGroup.childForceExpandHeight = false;
+            verticalLayoutGroup.childAlignment = TextAnchor.UpperCenter;
 
             var imageObject = new GameObject("Image");
             imageObject.transform.SetParent(itemContainer.transform, false);
+
             var image = imageObject.AddComponent<Image>();
             image.sprite = sprite;
-            image.rectTransform.sizeDelta = new Vector2(0, _itemHeight);
+            image.rectTransform.sizeDelta = new Vector2(width, _itemHeight);
 
             var textObject = new GameObject("Text");
             textObject.transform.SetParent(itemContainer.transform, false);
@@ -104,6 +111,7 @@ namespace UI.FileExplorer
             text.alignment = TextAlignmentOptions.Center;
             text.fontStyle = FontStyles.Bold;
             text.font = font;
+            text.rectTransform.sizeDelta = new Vector2(width, 0);
 
             var textContent = textObject.AddComponent<ContentSizeFitter>();
             textContent.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
