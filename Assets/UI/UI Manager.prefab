@@ -44,4 +44,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260ad2e866c144c4987b46ed260a61e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiScreens: []
+  mainCamera: {fileID: 0}
+  cameraDistance: 3
+  smoothTime: 0.3
+  hiddenThresholdAngle: 40
+  fileExplorerPrefab: {fileID: 0}
+  menuInputAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Menu Input
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 41cab44a-5119-4861-a14e-ca1ed85163b5
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: -7971571186471155282, guid: c348712bda248c246b8c49b3db54643f,
+      type: 3}

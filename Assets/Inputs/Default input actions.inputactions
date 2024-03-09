@@ -1,5 +1,5 @@
 {
-    "name": "XRI Default Input Actions",
+    "name": "Default input actions",
     "maps": [
         {
             "name": "XRI Head",
@@ -781,6 +781,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "UI Menu",
+                    "type": "Button",
+                    "id": "867acfcf-f4af-40d8-95b1-22f82abd2fc4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -946,6 +955,17 @@
                     "processors": "ScaleVector2(x=0),StickDeadzone",
                     "groups": "Generic XR Controller",
                     "action": "Scale Delta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "08c08fa5-fc75-4b87-b8d1-ed368e8a6691",
+                    "path": "<XRController>{LeftHand}/menu",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "UI Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

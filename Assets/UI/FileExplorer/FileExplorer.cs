@@ -25,7 +25,7 @@ namespace UI.FileExplorer
 
         private void RenderScreenContent(string path)
         {
-            var supportedFileTypes = "fbx";
+            const string supportedFileTypes = "fbx";
             _currentPath = path;
             string[] folders = Directory.GetDirectories(_currentPath);
             string[] files = Directory.GetFiles(_currentPath)

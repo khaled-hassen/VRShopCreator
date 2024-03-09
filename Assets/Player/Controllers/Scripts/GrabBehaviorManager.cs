@@ -18,8 +18,6 @@ namespace Player.Controllers.Scripts
         [SerializeField] private XRDirectInteractor rightDirectInteractor;
         [SerializeField] private XRRayInteractor rightRayInteractor;
 
-
-        // Start is called before the first frame update
         private void Awake()
         {
             leftDirectInteractor.selectEntered.AddListener(OnLeftGrabEntered);

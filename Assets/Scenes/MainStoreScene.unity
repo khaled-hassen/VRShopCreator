@@ -968,6 +968,12 @@ MonoBehaviour:
   m_Teleporting:
     m_PersistentCalls:
       m_Calls: []
+--- !u!20 &1457912718 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8285350689739573006, guid: 7f15f530684db3f42ae578d0811e3748,
+    type: 3}
+  m_PrefabInstance: {fileID: 3121003388975007990}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1754461557
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,17 +1095,17 @@ PrefabInstance:
     - target: {fileID: 4845997940920321289, guid: 61e00a8c5ebabf744b2306dc98561d6e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.92775285
+      value: -0.176
       objectReference: {fileID: 0}
     - target: {fileID: 4845997940920321289, guid: 61e00a8c5ebabf744b2306dc98561d6e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8546903
+      value: 1.121
       objectReference: {fileID: 0}
     - target: {fileID: 4845997940920321289, guid: 61e00a8c5ebabf744b2306dc98561d6e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.0773343
+      value: 2.136
       objectReference: {fileID: 0}
     - target: {fileID: 4845997940920321289, guid: 61e00a8c5ebabf744b2306dc98561d6e,
         type: 3}
@@ -1138,8 +1144,49 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
         type: 3}
+      propertyPath: centerTime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
+        type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 1457912718}
+    - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
+        type: 3}
+      propertyPath: centerSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
+        type: 3}
+      propertyPath: uiYPosition
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
+        type: 3}
+      propertyPath: cameraDistance
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
+        type: 3}
+      propertyPath: menuController
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
+        type: 3}
+      propertyPath: fileExplorerPrefab
+      value: 
+      objectReference: {fileID: 1024221631963837051, guid: a89df09e3214eba4ca51535c2e7c431a,
+        type: 3}
+    - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
+        type: 3}
       propertyPath: windows.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
+        type: 3}
+      propertyPath: hiddenThresholdAngle
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
         type: 3}
@@ -1158,6 +1205,22 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 02550de754eac744398ba462197b42ab,
         type: 2}
+    - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
+        type: 3}
+      propertyPath: menuInputAction.m_Reference
+      value: 
+      objectReference: {fileID: -7971571186471155282, guid: c348712bda248c246b8c49b3db54643f,
+        type: 3}
+    - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
+        type: 3}
+      propertyPath: menuInputAction.m_UseReference
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149631491920030083, guid: 61e00a8c5ebabf744b2306dc98561d6e,
+        type: 3}
+      propertyPath: menuInputAction.m_Action.m_Name
+      value: Menu Input
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

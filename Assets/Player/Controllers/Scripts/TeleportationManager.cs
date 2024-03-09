@@ -15,8 +15,7 @@ namespace Player.Controllers.Scripts
         private XRInteractorLineVisual _rayInteractorLineVisual;
 
         public bool isTeleportationDisabled { get; set; }
-
-        // Start is called before the first frame update
+        
         private void Awake()
         {
             _rayInteractorLineVisual = rayInteractor.GetComponent<XRInteractorLineVisual>();
