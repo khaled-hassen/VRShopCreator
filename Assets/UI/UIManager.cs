@@ -46,7 +46,7 @@ namespace UI
             Vector3 lookDir = mainCamera.transform.position - transform.position;
             lookDir.y = 0f;
             Quaternion targetRotation = Quaternion.LookRotation(lookDir.normalized, Vector3.up);
-            targetRotation *= Quaternion.Euler(windowTiltAngle, 180, 0); // Apply X rotation offset
+            targetRotation *= Quaternion.Euler(windowTiltAngle, 180, 0);
             return targetRotation;
         }
 

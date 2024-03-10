@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4845997940920321289}
-  - component: {fileID: 6149631491920030083}
+  - component: {fileID: -8132773563410613012}
   m_Layer: 0
   m_Name: UI Manager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6149631491920030083
+--- !u!114 &-8132773563410613012
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,20 +45,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
-  cameraDistance: 3
-  smoothTime: 0.3
-  hiddenThresholdAngle: 40
+  cameraDistance: 1.1
+  centerTime: 0.3
+  uiYPosition: 1.2
+  windowTiltAngle: 30
   fileExplorerPrefab: {fileID: 0}
   menuInputAction:
-    m_UseReference: 1
+    m_UseReference: 0
     m_Action:
       m_Name: Menu Input
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 41cab44a-5119-4861-a14e-ca1ed85163b5
+      m_Id: 185b9125-deeb-4595-8f18-44423e8743d1
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: -7971571186471155282, guid: c348712bda248c246b8c49b3db54643f,
-      type: 3}
+    m_Reference: {fileID: 0}
