@@ -6,15 +6,13 @@ namespace UI
     public class UIManager : MonoBehaviour
     {
         [SerializeField] private Camera mainCamera;
-        [SerializeField] private float hiddenThresholdAngle = 20f;
-        [SerializeField] private float cameraDistance = 1.5f;
-        [SerializeField] private float centerDistanceMargin = 1f;
+        [SerializeField] private float cameraDistance = 1.1f;
         [SerializeField] private float centerTime = 0.3f;
-        [SerializeField] private float uiYPosition = 2f;
+        [SerializeField] private float uiYPosition = 1.2f;
+        [SerializeField] private float windowTiltAngle = 30f;
         [SerializeField] private UIScreen fileExplorerPrefab;
         [SerializeField] private InputActionProperty menuInputAction;
 
-        private bool _isCentered = true;
         private bool _isMenuOpen;
         private UIScreen _menuScreen;
         private Vector3 _velocity = Vector3.zero;
@@ -29,26 +27,13 @@ namespace UI
 
         private void CenterUI()
         {
-            Vector3 targetPosition = CalculateNewPosition();
+            Vector3 targetPosition = CalculateTargetPosition();
             transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _velocity, centerTime);
 
-            var lookAtPos = new Vector3(mainCamera.transform.position.x, transform.position.y, mainCamera.transform.position.z);
-            transform.LookAt(lookAtPos);
-
-
-            // if (!CheckIfUIIsVisible()) _isCentered = false;
-            // if (_isCentered) return;
-            //
-            // Vector3 newPosition = CalculateNewPosition();
-            // float distance = Vector3.Distance(transform.position, newPosition);
-            // if (distance > centerDistanceMargin)
-            // {
-            //     transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref _velocity, centerTime);
-            // }
-            // else _isCentered = true;
+            transform.rotation = CalculateTargetRotation();
         }
 
-        private Vector3 CalculateNewPosition()
+        private Vector3 CalculateTargetPosition()
         {
             Transform cameraTransform = mainCamera.transform;
             Vector3 newPosition = cameraTransform.position + cameraTransform.forward * cameraDistance;
@@ -56,12 +41,13 @@ namespace UI
             return newPosition;
         }
 
-        private bool CheckIfUIIsVisible()
+        private Quaternion CalculateTargetRotation()
         {
-            Vector3 cameraForwardVector = Vector3.ProjectOnPlane(mainCamera.transform.forward, Vector3.up);
-            Vector3 uiForwardVector = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
-            float angle = Vector3.Angle(cameraForwardVector, uiForwardVector);
-            return angle < hiddenThresholdAngle;
+            Vector3 lookDir = mainCamera.transform.position - transform.position;
+            lookDir.y = 0f;
+            Quaternion targetRotation = Quaternion.LookRotation(lookDir.normalized, Vector3.up);
+            targetRotation *= Quaternion.Euler(windowTiltAngle, 180, 0); // Apply X rotation offset
+            return targetRotation;
         }
 
         private void OnMenuButtonPressed(InputAction.CallbackContext context)
@@ -72,10 +58,7 @@ namespace UI
 
         private void OpenMenu()
         {
-            UIScreen screen = Instantiate(fileExplorerPrefab, Vector3.zero, Quaternion.identity, transform);
-            Vector3 localPosition = screen.transform.localPosition;
-            localPosition = new Vector3(localPosition.x, localPosition.y, 0f);
-            screen.transform.localPosition = localPosition;
+            UIScreen screen = Instantiate(fileExplorerPrefab, transform.position, transform.rotation, transform);
             screen.LoadUI();
             _menuScreen = screen;
             _isMenuOpen = true;

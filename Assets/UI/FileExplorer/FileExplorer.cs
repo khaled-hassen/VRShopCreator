@@ -47,11 +47,12 @@ namespace UI.FileExplorer
 
             for (var i = 0; i < rows; i++)
             {
-                GameObject panelInstance = Instantiate(rowPrefab, Vector3.zero, Quaternion.identity, contentContainer.transform);
-                Vector3 localPosition = panelInstance.transform.localPosition;
-                localPosition = new Vector3(localPosition.x, localPosition.y, 0f);
-                panelInstance.transform.localPosition = localPosition;
-
+                GameObject panelInstance = Instantiate(
+                    rowPrefab,
+                    contentContainer.transform.position,
+                    contentContainer.transform.rotation,
+                    contentContainer.transform
+                );
                 RenderRowItems(folders, files, i, totalItems, panelInstance);
 
                 var contentFitter = panelInstance.AddComponent<ContentSizeFitter>();
