@@ -11,13 +11,17 @@ namespace UI
         [SerializeField] private float uiYPosition = 1.2f;
         [SerializeField] private float windowTiltAngle = 30f;
         [SerializeField] private UIScreen fileExplorerPrefab;
+        [SerializeField] private UIScreen productAssetImportPrefab;
         [SerializeField] private InputActionProperty menuInputAction;
 
         private bool _isMenuOpen;
         private UIScreen _menuScreen;
         private Vector3 _velocity = Vector3.zero;
 
-        private void Awake() => menuInputAction.action.performed += OnMenuButtonPressed;
+        private void Awake()
+        {
+            menuInputAction.action.performed += OnMenuButtonPressed;
+        }
 
         private void Update()
         {
@@ -27,7 +31,7 @@ namespace UI
 
         private void CenterUI()
         {
-            Vector3 targetPosition = CalculateTargetPosition();
+            var targetPosition = CalculateTargetPosition();
             transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _velocity, centerTime);
 
             transform.rotation = CalculateTargetRotation();
@@ -35,17 +39,17 @@ namespace UI
 
         private Vector3 CalculateTargetPosition()
         {
-            Transform cameraTransform = mainCamera.transform;
-            Vector3 newPosition = cameraTransform.position + cameraTransform.forward * cameraDistance;
+            var cameraTransform = mainCamera.transform;
+            var newPosition = cameraTransform.position + cameraTransform.forward * cameraDistance;
             newPosition.y = uiYPosition;
             return newPosition;
         }
 
         private Quaternion CalculateTargetRotation()
         {
-            Vector3 lookDir = mainCamera.transform.position - transform.position;
+            var lookDir = mainCamera.transform.position - transform.position;
             lookDir.y = 0f;
-            Quaternion targetRotation = Quaternion.LookRotation(lookDir.normalized, Vector3.up);
+            var targetRotation = Quaternion.LookRotation(lookDir.normalized, Vector3.up);
             targetRotation *= Quaternion.Euler(windowTiltAngle, 180, 0);
             return targetRotation;
         }
@@ -58,7 +62,7 @@ namespace UI
 
         private void OpenMenu()
         {
-            UIScreen screen = Instantiate(fileExplorerPrefab, transform.position, transform.rotation, transform);
+            var screen = Instantiate(fileExplorerPrefab, transform.position, transform.rotation, transform);
             screen.LoadUI();
             _menuScreen = screen;
             _isMenuOpen = true;
