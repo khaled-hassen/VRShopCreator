@@ -9,6 +9,8 @@ namespace UI.FileExplorer
 {
     public class FileExplorer : UIScreen
     {
+        public delegate void OnCloseWindowCallback();
+
         [SerializeField] private GameObject contentContainer;
         [SerializeField] private Sprite folderSprite;
         [SerializeField] private Sprite fileSprite;
@@ -21,14 +23,19 @@ namespace UI.FileExplorer
         private readonly int _itemsPerRow = 5;
         private string _currentPath;
 
-        public override void LoadUI() => RenderScreenContent(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+        public event OnCloseWindowCallback OnCloseWindow;
+
+        public override void LoadUI()
+        {
+            RenderScreenContent(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+        }
 
         private void RenderScreenContent(string path)
         {
             const string supportedFileTypes = "fbx";
             _currentPath = path;
-            string[] folders = Directory.GetDirectories(_currentPath);
-            string[] files = Directory.GetFiles(_currentPath)
+            var folders = Directory.GetDirectories(_currentPath);
+            var files = Directory.GetFiles(_currentPath)
                 .Where(file => supportedFileTypes.Contains(Path.GetExtension(file).TrimStart('.').ToLower()))
                 .ToArray();
 
@@ -42,12 +49,12 @@ namespace UI.FileExplorer
 
         private void RenderDirectoryContent(string[] folders, string[] files)
         {
-            int totalItems = folders.Length + files.Length;
-            int rows = (totalItems + _itemsPerRow - 1) / _itemsPerRow; // Calculate the total number of rows needed
+            var totalItems = folders.Length + files.Length;
+            var rows = (totalItems + _itemsPerRow - 1) / _itemsPerRow; // Calculate the total number of rows needed
 
             for (var i = 0; i < rows; i++)
             {
-                GameObject panelInstance = Instantiate(
+                var panelInstance = Instantiate(
                     rowPrefab,
                     contentContainer.transform.position,
                     contentContainer.transform.rotation,
@@ -137,8 +144,10 @@ namespace UI.FileExplorer
 
         public void OnBackClick()
         {
-            string parentPath = Directory.GetParent(_currentPath)?.FullName;
+            var parentPath = Directory.GetParent(_currentPath)?.FullName;
             if (parentPath is not null) UpdateScreenContent(parentPath);
         }
+
+        public void OnCloseWindowClick() => OnCloseWindow?.Invoke();
     }
 }

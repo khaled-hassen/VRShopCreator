@@ -1,3 +1,5 @@
+using Player.Controllers.Scripts;
+using UI.AssetImporter;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,9 +12,10 @@ namespace UI
         [SerializeField] private float centerTime = 0.3f;
         [SerializeField] private float uiYPosition = 1.2f;
         [SerializeField] private float windowTiltAngle = 30f;
-        [SerializeField] private UIScreen fileExplorerPrefab;
-        [SerializeField] private UIScreen productAssetImportPrefab;
+        [SerializeField] private FileExplorer.FileExplorer fileExplorerPrefab;
+        [SerializeField] private ProductAssetImport productAssetImportPrefab;
         [SerializeField] private InputActionProperty menuInputAction;
+        [SerializeField] private XRInteractionManager interactionManager;
 
         private bool _isMenuOpen;
         private UIScreen _menuScreen;
@@ -64,6 +67,7 @@ namespace UI
         {
             var screen = Instantiate(fileExplorerPrefab, transform.position, transform.rotation, transform);
             screen.LoadUI();
+            screen.OnCloseWindow += CloseMenu;
             _menuScreen = screen;
             _isMenuOpen = true;
             CenterUI();
@@ -74,6 +78,8 @@ namespace UI
             if (_menuScreen) Destroy(_menuScreen.gameObject);
             _isMenuOpen = false;
             _menuScreen = null;
+            interactionManager.EnableTeleportation();
+            interactionManager.EnableContinuousMovement();
         }
     }
 }

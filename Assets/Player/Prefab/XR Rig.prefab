@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 5961025075746109519}
   - component: {fileID: 8217268483396316412}
   - component: {fileID: 898901637695787782}
-  - component: {fileID: 5563864686408417601}
+  - component: {fileID: 8935594931870600369}
   m_Layer: 6
   m_Name: XR Rig
   m_TagString: Untagged
@@ -268,7 +268,7 @@ MonoBehaviour:
       type: 3}
   rayInteractor: {fileID: 8554420609747379326}
   teleportationProvider: {fileID: 8217268483396316412}
---- !u!114 &5563864686408417601
+--- !u!114 &8935594931870600369
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -277,7 +277,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 806000017421014725}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9829d94a23b361408ac043b76a0e07a, type: 3}
+  m_Script: {fileID: 11500000, guid: 68ab5f6b0334bfb43911d77b6839ff6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teleportationProvider: {fileID: 8217268483396316412}
@@ -285,10 +285,6 @@ MonoBehaviour:
   teleportationController: {fileID: 4721888569174775588}
   continuousMoveProvider: {fileID: 7360421826260845941}
   continuousTurnProvider: {fileID: 8640021632261689985}
-  leftDirectInteractor: {fileID: 981242628228304750}
-  leftRayInteractor: {fileID: 6771751551449480055}
-  rightDirectInteractor: {fileID: 6705571722313986425}
-  rightRayInteractor: {fileID: 3948380465339288495}
 --- !u!1 &1422686741806183255
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,10 +594,34 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8935594931870600369}
+        m_TargetAssemblyTypeName: XRInteractionManager, Assembly-CSharp
+        m_MethodName: DisableContinuousMovement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8935594931870600369}
+        m_TargetAssemblyTypeName: XRInteractionManager, Assembly-CSharp
+        m_MethodName: EnableContinuousMovement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_OnHoverEntered:
@@ -988,10 +1008,34 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8935594931870600369}
+        m_TargetAssemblyTypeName: XRInteractionManager, Assembly-CSharp
+        m_MethodName: DisableTeleportation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8935594931870600369}
+        m_TargetAssemblyTypeName: XRInteractionManager, Assembly-CSharp
+        m_MethodName: EnableTeleportation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_OnHoverEntered:
@@ -1378,10 +1422,34 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8935594931870600369}
+        m_TargetAssemblyTypeName: XRInteractionManager, Assembly-CSharp
+        m_MethodName: DisableTeleportation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8935594931870600369}
+        m_TargetAssemblyTypeName: XRInteractionManager, Assembly-CSharp
+        m_MethodName: EnableTeleportation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_OnHoverEntered:
@@ -1469,10 +1537,34 @@ MonoBehaviour:
   m_AnchorRotationMode: 0
   m_UIHoverEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8935594931870600369}
+        m_TargetAssemblyTypeName: XRInteractionManager, Assembly-CSharp
+        m_MethodName: DisableTeleportation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_UIHoverExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8935594931870600369}
+        m_TargetAssemblyTypeName: XRInteractionManager, Assembly-CSharp
+        m_MethodName: EnableTeleportation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_EnableARRaycasting: 0
   m_OccludeARHitsWith3DObjects: 0
   m_OccludeARHitsWith2DObjects: 0
@@ -2353,10 +2445,34 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8935594931870600369}
+        m_TargetAssemblyTypeName: XRInteractionManager, Assembly-CSharp
+        m_MethodName: DisableContinuousMovement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8935594931870600369}
+        m_TargetAssemblyTypeName: XRInteractionManager, Assembly-CSharp
+        m_MethodName: EnableContinuousMovement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_OnHoverEntered:
@@ -2444,10 +2560,34 @@ MonoBehaviour:
   m_AnchorRotationMode: 0
   m_UIHoverEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8935594931870600369}
+        m_TargetAssemblyTypeName: XRInteractionManager, Assembly-CSharp
+        m_MethodName: DisableContinuousMovement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_UIHoverExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8935594931870600369}
+        m_TargetAssemblyTypeName: XRInteractionManager, Assembly-CSharp
+        m_MethodName: EnableContinuousMovement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_EnableARRaycasting: 0
   m_OccludeARHitsWith3DObjects: 0
   m_OccludeARHitsWith2DObjects: 0
