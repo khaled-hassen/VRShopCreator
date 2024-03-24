@@ -1104,32 +1104,19 @@ PrefabInstance:
       objectReference: {fileID: 1457912718}
     - target: {fileID: -8132773563410613012, guid: 61e00a8c5ebabf744b2306dc98561d6e,
         type: 3}
-      propertyPath: fileExplorerPrefab
-      value: 
-      objectReference: {fileID: 1024221631963837051, guid: a89df09e3214eba4ca51535c2e7c431a,
+      propertyPath: windowTiltAngle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8132773563410613012, guid: 61e00a8c5ebabf744b2306dc98561d6e,
         type: 3}
+      propertyPath: gapBetweenScreens
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: -8132773563410613012, guid: 61e00a8c5ebabf744b2306dc98561d6e,
         type: 3}
       propertyPath: interactionManager
       value: 
       objectReference: {fileID: 1395034260}
-    - target: {fileID: -8132773563410613012, guid: 61e00a8c5ebabf744b2306dc98561d6e,
-        type: 3}
-      propertyPath: productAssetImportPrefab
-      value: 
-      objectReference: {fileID: 2657217988355689644, guid: 0e65d9d2fde8c1a45af65eb0f5e9b0cd,
-        type: 3}
-    - target: {fileID: -8132773563410613012, guid: 61e00a8c5ebabf744b2306dc98561d6e,
-        type: 3}
-      propertyPath: menuInputAction.m_Reference
-      value: 
-      objectReference: {fileID: -7971571186471155282, guid: c348712bda248c246b8c49b3db54643f,
-        type: 3}
-    - target: {fileID: -8132773563410613012, guid: 61e00a8c5ebabf744b2306dc98561d6e,
-        type: 3}
-      propertyPath: menuInputAction.m_UseReference
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2138068951427586656, guid: 61e00a8c5ebabf744b2306dc98561d6e,
         type: 3}
       propertyPath: m_Name

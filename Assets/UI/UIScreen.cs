@@ -5,8 +5,11 @@ namespace UI
 {
     public abstract class UIScreen : MonoBehaviour
     {
-        [SerializeField] protected TMP_FontAsset font;
+        public delegate void OnCloseWindowCallback();
 
-        public abstract void LoadUI();
+        [SerializeField] protected TMP_FontAsset font;
+        public event OnCloseWindowCallback OnCloseWindow;
+
+        public void OnCloseWindowClick() => OnCloseWindow?.Invoke();
     }
 }

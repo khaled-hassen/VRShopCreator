@@ -968,6 +968,17 @@
                     "action": "UI Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "88842ff6-2392-489f-b4df-a67735b52f3e",
+                    "path": "<Keyboard>/#(M)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UI Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

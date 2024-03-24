@@ -7,9 +7,12 @@ namespace UI.AssetImporter
     {
         [SerializeField] private GameObject specRowPrefab;
         [SerializeField] private GameObject contentContainer;
+        private string _filePath;
 
-        public override void LoadUI()
+        public void LoadUI(string filePath)
         {
+            _filePath = filePath;
+            Debug.Log($"Loading UI for file: {_filePath}");
         }
 
         public void OnNewSpecClicked()

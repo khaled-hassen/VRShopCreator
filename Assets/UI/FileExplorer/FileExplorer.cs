@@ -9,7 +9,7 @@ namespace UI.FileExplorer
 {
     public class FileExplorer : UIScreen
     {
-        public delegate void OnCloseWindowCallback();
+        public delegate void OnImportAssetCallback(string filePath);
 
         [SerializeField] private GameObject contentContainer;
         [SerializeField] private Sprite folderSprite;
@@ -22,13 +22,12 @@ namespace UI.FileExplorer
         private readonly int _itemHeight = 100;
         private readonly int _itemsPerRow = 5;
         private string _currentPath;
+        private string _selectedFilePath;
 
-        public event OnCloseWindowCallback OnCloseWindow;
+        public event OnImportAssetCallback OnImportAsset;
 
-        public override void LoadUI()
-        {
+        public void LoadUI() =>
             RenderScreenContent(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-        }
 
         private void RenderScreenContent(string path)
         {
@@ -140,6 +139,7 @@ namespace UI.FileExplorer
         private void OnItemClick(string path)
         {
             if (Directory.Exists(path)) UpdateScreenContent(path);
+            else _selectedFilePath = path;
         }
 
         public void OnBackClick()
@@ -148,6 +148,10 @@ namespace UI.FileExplorer
             if (parentPath is not null) UpdateScreenContent(parentPath);
         }
 
-        public void OnCloseWindowClick() => OnCloseWindow?.Invoke();
+        public void OnImportClick()
+        {
+            OnImportAsset?.Invoke(_selectedFilePath);
+            _selectedFilePath = null;
+        }
     }
 }
