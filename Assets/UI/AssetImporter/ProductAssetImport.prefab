@@ -3656,7 +3656,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 620.0116, y: 0.004272461}
+  m_AnchoredPosition: {x: 620.0116, y: 0.0028076172}
   m_SizeDelta: {x: 620, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &2242359321602839677
@@ -4385,6 +4385,7 @@ GameObject:
   - component: {fileID: 3544375898996001700}
   - component: {fileID: 7433197693299031923}
   - component: {fileID: 7381279184064230605}
+  - component: {fileID: 2997490041953434403}
   m_Layer: 5
   m_Name: ScrollContainer
   m_TagString: Untagged
@@ -4450,6 +4451,20 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2997490041953434403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6875407176639975493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
 --- !u!1 &7001507820337871681
 GameObject:
   m_ObjectHideFlags: 0
@@ -5561,12 +5576,12 @@ PrefabInstance:
     - target: {fileID: 5056957466179943552, guid: 61fed217dc5c13c4fb583c4afb70548f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 0.10501099
       objectReference: {fileID: 0}
     - target: {fileID: 5056957466179943552, guid: 61fed217dc5c13c4fb583c4afb70548f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.11099243
       objectReference: {fileID: 0}
     - target: {fileID: 5056957466179943552, guid: 61fed217dc5c13c4fb583c4afb70548f,
         type: 3}
