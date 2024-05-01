@@ -53,6 +53,8 @@ MonoBehaviour:
     type: 3}
   productAssetImportPrefab: {fileID: 2657217988355689644, guid: 0e65d9d2fde8c1a45af65eb0f5e9b0cd,
     type: 3}
+  decorationAssetImportPrefab: {fileID: -7725911231311203342, guid: a30030d9a63eb20479284e3792ed80ff,
+    type: 3}
   menuInputAction:
     m_UseReference: 1
     m_Action:
@@ -67,3 +69,4 @@ MonoBehaviour:
     m_Reference: {fileID: -7971571186471155282, guid: c348712bda248c246b8c49b3db54643f,
       type: 3}
   interactionManager: {fileID: 0}
+  gapBetweenScreens: 30

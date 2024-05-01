@@ -3,13 +3,10 @@ using UnityEngine.UI;
 
 namespace UI.AssetImporter
 {
-    public class ProductAssetImport : UIScreen
+    public class ProductAssetImport : AssetImporter
     {
-        [SerializeField] private GameObject specRowPrefab;
-        [SerializeField] private GameObject contentContainer;
-        private string _filePath;
-
-        public void LoadUI(string filePath) => _filePath = filePath;
+        [SerializeField] protected GameObject contentContainer;
+        [SerializeField] protected GameObject specRowPrefab;
 
         public void OnNewSpecClicked()
         {

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Player.Controllers.Scripts;
 using UI.AssetImporter;
 using UnityEngine;
@@ -14,12 +16,15 @@ namespace UI
         [SerializeField] private float windowTiltAngle = 30f;
         [SerializeField] private FileExplorer.FileExplorer fileExplorerPrefab;
         [SerializeField] private ProductAssetImport productAssetImportPrefab;
+        [SerializeField] private DecorationAssertImport decorationAssetImportPrefab;
         [SerializeField] private InputActionProperty menuInputAction;
         [SerializeField] private XRInteractionManager interactionManager;
         [SerializeField] private int gapBetweenScreens = 30;
+        private readonly List<UIScreen> _activeScreens = new();
 
         private UIScreen _assetImportScreen;
-        private UIScreen _mainMenuScreen;
+        private UIScreen _decorationImportScreen;
+        private UIScreen _fileExplorerScreen;
         private Vector3 _velocity = Vector3.zero;
 
         private void Awake()
@@ -29,7 +34,7 @@ namespace UI
 
         private void Update()
         {
-            if (_mainMenuScreen is null && _assetImportScreen is null) return;
+            if (_fileExplorerScreen is null && _assetImportScreen is null) return;
             CenterUI();
         }
 
@@ -60,9 +65,9 @@ namespace UI
 
         private void OnMenuButtonPressed(InputAction.CallbackContext context)
         {
-            if (_mainMenuScreen)
+            if (_fileExplorerScreen)
             {
-                CloseWindowScreen(ref _mainMenuScreen);
+                CloseWindowScreen(ref _fileExplorerScreen);
             }
             else
             {
@@ -71,21 +76,54 @@ namespace UI
             }
         }
 
+        private void RearrangeScreens()
+        {
+            if (_activeScreens.Count == 0) return;
+
+            var previousPosition = transform.position;
+            var totalWidth = 0f;
+            RectTransform prevRect = null;
+            foreach (var screen in _activeScreens)
+            {
+                var xTranslate = 0f;
+
+                var screenRect = screen.GetComponent<RectTransform>();
+                if (prevRect is not null)
+                {
+                    var localScaleX = prevRect.localScale.x;
+                    var prevHalfWidth = prevRect.rect.width / 2;
+                    var halfWidth = screenRect.rect.width / 2;
+                    xTranslate = (halfWidth + prevHalfWidth + gapBetweenScreens) * localScaleX;
+                }
+
+                screen.transform.position = previousPosition + Vector3.right * xTranslate;
+                previousPosition = screen.transform.position;
+                prevRect = screen.GetComponent<RectTransform>();
+                totalWidth += prevRect.rect.width + gapBetweenScreens;
+            }
+
+            totalWidth -= gapBetweenScreens + _activeScreens.First().GetComponent<RectTransform>().rect.width;
+
+            foreach (var screen in _activeScreens) screen.transform.position += Vector3.left * screen.transform.localScale.x * (totalWidth / 2);
+        }
+
         private void OpenFileExplorer()
         {
             var screen = Instantiate(fileExplorerPrefab, transform.position, transform.rotation, transform);
             screen.LoadUI();
-            _mainMenuScreen = screen;
+            _fileExplorerScreen = screen;
+            _activeScreens.Insert(0, screen);
             RearrangeScreens();
 
             // listen to events
-            screen.OnCloseWindow += () => CloseWindowScreen(ref _mainMenuScreen);
-            screen.OnImportAsset += OpenImportAssetMenu;
+            screen.OnCloseWindow += () => CloseWindowScreen(ref _fileExplorerScreen);
+            screen.OnImportAsset += OpenImportProductAssetMenu;
         }
 
         private void CloseWindowScreen(ref UIScreen screen)
         {
             Destroy(screen.gameObject);
+            _activeScreens.Remove(screen);
             screen = null;
             RearrangeScreens();
 
@@ -93,36 +131,46 @@ namespace UI
             interactionManager.EnableContinuousMovement();
         }
 
-        private void OpenImportAssetMenu(string filePath)
+        private void OpenImportProductAssetMenu(string filePath)
         {
             if (filePath is null || _assetImportScreen is not null) return;
+            if (_decorationImportScreen is not null)
+            {
+                Destroy(_decorationImportScreen.gameObject);
+                _activeScreens.Remove(_decorationImportScreen);
+                _decorationImportScreen = null;
+            }
 
             var screen = Instantiate(productAssetImportPrefab, transform.position, transform.rotation, transform);
             screen.LoadUI(filePath);
             _assetImportScreen = screen;
+            _activeScreens.Add(screen);
             RearrangeScreens();
 
             // listen to events
             screen.OnCloseWindow += () => CloseWindowScreen(ref _assetImportScreen);
+            screen.OnTabClicked += OpenImportDecorationAssetMenu;
         }
 
-        private void RearrangeScreens()
+        private void OpenImportDecorationAssetMenu(string filePath)
         {
-            if (_mainMenuScreen != null)
-                _mainMenuScreen.transform.position = CalculateNewPosition(_mainMenuScreen, _assetImportScreen, Vector3.left);
+            if (filePath is null || _decorationImportScreen is not null) return;
+            if (_assetImportScreen is not null)
+            {
+                Destroy(_assetImportScreen.gameObject);
+                _activeScreens.Remove(_assetImportScreen);
+                _assetImportScreen = null;
+            }
 
-            if (_assetImportScreen != null)
-                _assetImportScreen.transform.position = CalculateNewPosition(_assetImportScreen, _mainMenuScreen, Vector3.right);
-        }
+            var screen = Instantiate(decorationAssetImportPrefab, transform.position, transform.rotation, transform);
+            screen.LoadUI(filePath);
+            _decorationImportScreen = screen;
+            _activeScreens.Add(screen);
+            RearrangeScreens();
 
-        private Vector3 CalculateNewPosition(UIScreen currentScreen, UIScreen otherScreen, Vector3 direction)
-        {
-            if (otherScreen is null) return transform.position;
-
-            var rectangle = currentScreen.GetComponent<RectTransform>();
-            var halfWidth = rectangle.rect.width / 2;
-            var xTranslate = (halfWidth + gapBetweenScreens) * rectangle.localScale.x;
-            return rectangle.position + direction * xTranslate;
+            // listen to events
+            screen.OnCloseWindow += () => CloseWindowScreen(ref _decorationImportScreen);
+            screen.OnTabClicked += OpenImportProductAssetMenu;
         }
     }
 }
