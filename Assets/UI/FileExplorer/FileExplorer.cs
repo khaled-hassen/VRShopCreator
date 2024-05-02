@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,7 @@ namespace UI.FileExplorer
         public delegate void OnImportAssetCallback(string filePath);
 
         [SerializeField] private GameObject contentContainer;
+        [SerializeField] private GameObject importAssetButton;
         [SerializeField] private Sprite folderSprite;
         [SerializeField] private Sprite fileSprite;
         [SerializeField] private GameObject rowPrefab;
@@ -101,6 +103,7 @@ namespace UI.FileExplorer
             verticalLayoutGroup.childForceExpandWidth = true;
             verticalLayoutGroup.childForceExpandHeight = false;
             verticalLayoutGroup.childAlignment = TextAnchor.UpperCenter;
+            verticalLayoutGroup.padding = new RectOffset(10, 10, 10, 10);
 
             var imageObject = new GameObject("Image");
             imageObject.transform.SetParent(itemContainer.transform, false);
@@ -126,7 +129,20 @@ namespace UI.FileExplorer
             var contentFitter = itemContainer.AddComponent<ContentSizeFitter>();
             contentFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
+            var btnImage = itemContainer.AddComponent<Image>();
             var button = itemContainer.AddComponent<Button>();
+            button.targetGraphic = btnImage;
+            ColorUtility.TryParseHtmlString("#747474", out var color);
+            button.colors = new ColorBlock
+            {
+                normalColor = Color.clear,
+                highlightedColor = color,
+                pressedColor = color,
+                selectedColor = color,
+                disabledColor = Color.clear,
+                fadeDuration = 0.3f,
+                colorMultiplier = 1
+            };
             button.onClick.AddListener(() => OnItemClick(path));
         }
 
@@ -138,8 +154,21 @@ namespace UI.FileExplorer
 
         private void OnItemClick(string path)
         {
-            if (Directory.Exists(path)) UpdateScreenContent(path);
-            else _selectedFilePath = path;
+            if (Directory.Exists(path))
+            {
+                UpdateScreenContent(path);
+                SelectFile(null);
+            }
+            else
+            {
+                SelectFile(path);
+            }
+        }
+
+        private void SelectFile([CanBeNull] string path)
+        {
+            _selectedFilePath = path;
+            importAssetButton.SetActive(path is not null);
         }
 
         public void OnBackClick()
@@ -150,8 +179,9 @@ namespace UI.FileExplorer
 
         public void OnImportClick()
         {
+            if (_selectedFilePath is null) return;
             OnImportAsset?.Invoke(_selectedFilePath);
-            _selectedFilePath = null;
+            SelectFile(null);
         }
     }
 }

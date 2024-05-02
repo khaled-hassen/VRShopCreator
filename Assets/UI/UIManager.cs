@@ -122,24 +122,26 @@ namespace UI
 
         private void CloseWindowScreen(ref UIScreen screen)
         {
-            Destroy(screen.gameObject);
-            _activeScreens.Remove(screen);
-            screen = null;
+            DestroyScreen(ref screen);
             RearrangeScreens();
 
             interactionManager.EnableTeleportation();
             interactionManager.EnableContinuousMovement();
         }
 
+        private void DestroyScreen(ref UIScreen screen)
+        {
+            Destroy(screen.gameObject);
+            _activeScreens.Remove(screen);
+            screen = null;
+        }
+
         private void OpenImportProductAssetMenu(string filePath)
         {
-            if (filePath is null || _assetImportScreen is not null) return;
-            if (_decorationImportScreen is not null)
-            {
-                Destroy(_decorationImportScreen.gameObject);
-                _activeScreens.Remove(_decorationImportScreen);
-                _decorationImportScreen = null;
-            }
+            if (filePath is null) return;
+
+            if (_assetImportScreen is not null) DestroyScreen(ref _assetImportScreen);
+            if (_decorationImportScreen is not null) DestroyScreen(ref _decorationImportScreen);
 
             var screen = Instantiate(productAssetImportPrefab, transform.position, transform.rotation, transform);
             screen.LoadUI(filePath);
@@ -155,12 +157,7 @@ namespace UI
         private void OpenImportDecorationAssetMenu(string filePath)
         {
             if (filePath is null || _decorationImportScreen is not null) return;
-            if (_assetImportScreen is not null)
-            {
-                Destroy(_assetImportScreen.gameObject);
-                _activeScreens.Remove(_assetImportScreen);
-                _assetImportScreen = null;
-            }
+            if (_assetImportScreen is not null) DestroyScreen(ref _assetImportScreen);
 
             var screen = Instantiate(decorationAssetImportPrefab, transform.position, transform.rotation, transform);
             screen.LoadUI(filePath);
