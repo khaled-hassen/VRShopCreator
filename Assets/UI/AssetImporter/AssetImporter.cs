@@ -39,10 +39,10 @@ namespace UI.AssetImporter
             var assetData = new StoreAssetData { assetName = assetName };
             AddDataToAsset(assetData);
 
-            // Create a save directory if it doesn't exist
             var saveDirectory = Path.Combine(_saveManager.GetSaveDirectoryPath(), assetName);
             if (!Directory.Exists(saveDirectory)) Directory.CreateDirectory(saveDirectory);
 
+            // save asset data
             var formatter = new BinaryFormatter();
             var dataFilePath = Path.Combine(saveDirectory, "data.dat");
             var file = File.Create(dataFilePath);
@@ -50,7 +50,7 @@ namespace UI.AssetImporter
             file.Close();
             Debug.Log("Data file saved to: " + dataFilePath);
 
-            // copy the fbx from the original path to the save directory
+            // save asset 3d model
             var objSavePath = Path.Combine(saveDirectory, "mesh.obj");
             File.Copy(_filePath, objSavePath);
             Debug.Log("OBJ file saved to: " + objSavePath);
