@@ -1,3 +1,5 @@
+using System;
+using StoreAsset;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +21,11 @@ namespace UI.AssetImporter
 
             var removeBtn = specRow.transform.Find("RemoveBtn").GetComponent<Button>();
             removeBtn.onClick.AddListener(() => Destroy(specRow));
+        }
+
+        protected override void AddDataToAsset(StoreAssetData assetData)
+        {
+            throw new NotImplementedException();
         }
     }
 }

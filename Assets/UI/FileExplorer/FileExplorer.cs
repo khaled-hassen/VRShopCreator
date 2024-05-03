@@ -33,7 +33,7 @@ namespace UI.FileExplorer
 
         private void RenderScreenContent(string path)
         {
-            const string supportedFileTypes = "fbx";
+            const string supportedFileTypes = "obj";
             _currentPath = path;
             var folders = Directory.GetDirectories(_currentPath);
             var files = Directory.GetFiles(_currentPath)
