@@ -33,7 +33,7 @@ namespace UI.AssetImporter
             assetNameInput.text = Path.GetFileNameWithoutExtension(filePath);
         }
 
-        protected void ImportAsset()
+        public void ImportAsset()
         {
             var assetName = assetNameInput.text;
             var assetData = new StoreAssetData { assetName = assetName };
@@ -54,6 +54,8 @@ namespace UI.AssetImporter
             var objSavePath = Path.Combine(saveDirectory, "mesh.obj");
             File.Copy(_filePath, objSavePath);
             Debug.Log("OBJ file saved to: " + objSavePath);
+
+            OnCloseWindowClick();
         }
 
         protected abstract void AddDataToAsset(StoreAssetData assetData);

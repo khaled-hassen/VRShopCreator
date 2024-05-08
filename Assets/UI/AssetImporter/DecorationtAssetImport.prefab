@@ -581,7 +581,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: -7725911231311203342}
-        m_TargetAssemblyTypeName: UI.AssetImporter.DecorationAssertImport, Assembly-CSharp
+        m_TargetAssemblyTypeName: UI.AssetImporter.AssetImporter, Assembly-CSharp
         m_MethodName: ImportAsset
         m_Mode: 1
         m_Arguments:
@@ -2001,7 +2001,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 85, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1187850654426834205
@@ -2410,5 +2410,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   font: {fileID: 11400000, guid: c13f0cf6102f5a340998ddda7ef7a0d0, type: 2}
   assetNameInput: {fileID: 308040382582932757}
-  storeAssetPrefab: {fileID: -146348503169024439, guid: 47985501f0e816c42b7ef4361f3ade37,
-    type: 3}

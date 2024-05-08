@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6477128183955748240}
   - component: {fileID: 5602893792046563986}
   m_Layer: 5
-  m_Name: Input
+  m_Name: SpecValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -890,7 +890,7 @@ GameObject:
   - component: {fileID: 7875143361062813724}
   - component: {fileID: 5831294075490943510}
   m_Layer: 5
-  m_Name: Input
+  m_Name: SpecName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

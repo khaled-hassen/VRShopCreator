@@ -1,5 +1,5 @@
-using System;
 using StoreAsset;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +25,17 @@ namespace UI.AssetImporter
 
         protected override void AddDataToAsset(StoreAssetData assetData)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < contentContainer.transform.childCount; i++)
+            {
+                var child = contentContainer.transform.GetChild(i);
+                var specNameInput = child.Find("Inputs/Name/InputContainer/SpecName");
+                var specValueInput = child.Find("Inputs/Value/InputContainer/SpecValue");
+                if (specNameInput is null || specValueInput is null) continue;
+
+                var specName = specNameInput.GetComponent<TMP_InputField>().text;
+                var specValue = specValueInput.GetComponent<TMP_InputField>().text;
+                assetData.AddSpecification(specName, specValue);
+            }
         }
     }
 }
