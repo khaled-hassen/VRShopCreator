@@ -12,6 +12,11 @@ namespace UI.FileExplorer
     {
         public delegate void OnImportAssetCallback(string filePath);
 
+        private const int FileWidth = 88;
+        private const int FolderWidth = 140;
+        private const int ItemHeight = 100;
+        private const int ItemsPerRow = 5;
+
         [SerializeField] private GameObject contentContainer;
         [SerializeField] private GameObject importAssetButton;
         [SerializeField] private Sprite folderSprite;
@@ -19,10 +24,6 @@ namespace UI.FileExplorer
         [SerializeField] private GameObject rowPrefab;
         [SerializeField] private TextMeshProUGUI locationText;
         [SerializeField] private int textCharacterLimit = 27;
-        private readonly int _fileWidth = 88;
-        private readonly int _folderWidth = 140;
-        private readonly int _itemHeight = 100;
-        private readonly int _itemsPerRow = 5;
         private string _currentPath;
         private string _selectedFilePath;
 
@@ -51,7 +52,7 @@ namespace UI.FileExplorer
         private void RenderDirectoryContent(string[] folders, string[] files)
         {
             var totalItems = folders.Length + files.Length;
-            var rows = (totalItems + _itemsPerRow - 1) / _itemsPerRow; // Calculate the total number of rows needed
+            var rows = (totalItems + ItemsPerRow - 1) / ItemsPerRow; // Calculate the total number of rows needed
 
             for (var i = 0; i < rows; i++)
             {
@@ -65,27 +66,30 @@ namespace UI.FileExplorer
 
                 var contentFitter = panelInstance.AddComponent<ContentSizeFitter>();
                 contentFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+                // needs to be called twice to force the layout to update
+                LayoutRebuilder.ForceRebuildLayoutImmediate(panelInstance.transform as RectTransform);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(panelInstance.transform as RectTransform);
             }
 
-            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(contentContainer.transform as RectTransform);
         }
 
         private (Sprite sprite, int width, string path) GetDirectoryItemData(int index, string[] folders, string[] files)
         {
-            if (index < folders.Length) return (folderSprite, _folderWidth, folders[index]);
-            if (index < folders.Length + files.Length) return (fileSprite, _fileWidth, files[index - folders.Length]);
+            if (index < folders.Length) return (folderSprite, FolderWidth, folders[index]);
+            if (index < folders.Length + files.Length) return (fileSprite, FileWidth, files[index - folders.Length]);
             return (null, 0, "");
         }
 
         private void RenderRowItems(string[] folders, string[] files, int rowIndex, int totalItems, GameObject panelInstance)
         {
-            Enumerable.Range(rowIndex * _itemsPerRow, _itemsPerRow)
+            Enumerable.Range(rowIndex * ItemsPerRow, ItemsPerRow)
                 .TakeWhile(index => index < totalItems)
                 .Select(index => GetDirectoryItemData(index, folders, files))
                 .Where(item => item.sprite is not null)
                 .ToList()
                 .ForEach(item => RenderDirectoryItem(panelInstance, item.path, item.sprite, item.width));
-            Canvas.ForceUpdateCanvases();
         }
 
         private void RenderDirectoryItem(GameObject parent, string path, Sprite sprite, int width)
@@ -94,7 +98,7 @@ namespace UI.FileExplorer
             itemContainer.transform.SetParent(parent.transform, false);
 
             var rectTransform = itemContainer.AddComponent<RectTransform>();
-            rectTransform.sizeDelta = new Vector2(_folderWidth, 0);
+            rectTransform.sizeDelta = new Vector2(FolderWidth, 0);
 
             var verticalLayoutGroup = itemContainer.AddComponent<VerticalLayoutGroup>();
             verticalLayoutGroup.spacing = 12;
@@ -110,7 +114,7 @@ namespace UI.FileExplorer
 
             var image = imageObject.AddComponent<Image>();
             image.sprite = sprite;
-            image.rectTransform.sizeDelta = new Vector2(width, _itemHeight);
+            image.rectTransform.sizeDelta = new Vector2(width, ItemHeight);
 
             var textObject = new GameObject("Text");
             textObject.transform.SetParent(itemContainer.transform, false);

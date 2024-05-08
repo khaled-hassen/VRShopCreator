@@ -15,6 +15,7 @@ namespace UI
         [SerializeField] private float uiYPosition = 1.2f;
         [SerializeField] private float windowTiltAngle = 30f;
         [SerializeField] private FileExplorer.FileExplorer fileExplorerPrefab;
+        [SerializeField] private AssetsExplorer.AssetsExplorer assetsExplorerPrefab;
         [SerializeField] private ProductAssetImport productAssetImportPrefab;
         [SerializeField] private DecorationAssertImport decorationAssetImportPrefab;
         [SerializeField] private InputActionProperty menuInputAction;
@@ -23,6 +24,7 @@ namespace UI
         private readonly List<UIScreen> _activeScreens = new();
 
         private UIScreen _assetImportScreen;
+        private UIScreen _assetsExplorerScreen;
         private UIScreen _decorationImportScreen;
         private UIScreen _fileExplorerScreen;
         private Vector3 _velocity = Vector3.zero;
@@ -34,7 +36,7 @@ namespace UI
 
         private void Update()
         {
-            if (_fileExplorerScreen is null && _assetImportScreen is null) return;
+            if (_activeScreens.Count == 0) return;
             CenterUI();
         }
 
@@ -65,13 +67,13 @@ namespace UI
 
         private void OnMenuButtonPressed(InputAction.CallbackContext context)
         {
-            if (_fileExplorerScreen)
+            if (_assetsExplorerScreen)
             {
-                CloseWindowScreen(ref _fileExplorerScreen);
+                CloseWindowScreen(ref _assetsExplorerScreen);
             }
             else
             {
-                OpenFileExplorer();
+                OpenAssetsExplorer();
                 CenterUI();
             }
         }
@@ -107,12 +109,25 @@ namespace UI
             foreach (var screen in _activeScreens) screen.transform.position += Vector3.left * screen.transform.localScale.x * (totalWidth / 2);
         }
 
+        private void OpenAssetsExplorer()
+        {
+            var screen = Instantiate(assetsExplorerPrefab, transform.position, transform.rotation, transform);
+            screen.LoadUI();
+            _assetsExplorerScreen = screen;
+            _activeScreens.Insert(0, _assetsExplorerScreen);
+            RearrangeScreens();
+
+            // listen to events
+            screen.OnCloseWindow += () => CloseWindowScreen(ref _assetsExplorerScreen);
+            screen.OnOpenAddNewAssetScreen += OpenFileExplorer;
+        }
+
         private void OpenFileExplorer()
         {
             var screen = Instantiate(fileExplorerPrefab, transform.position, transform.rotation, transform);
             screen.LoadUI();
             _fileExplorerScreen = screen;
-            _activeScreens.Insert(0, screen);
+            _activeScreens.Insert(_assetsExplorerScreen is null ? 0 : 1, screen);
             RearrangeScreens();
 
             // listen to events
