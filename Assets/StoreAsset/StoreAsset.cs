@@ -26,7 +26,7 @@ namespace StoreAsset
 
     public class StoreAsset : MonoBehaviour
     {
-        public StoreAssetData assetData { get; } = new();
+        public StoreAssetData assetData { get; set; } = new();
 
         private void Awake()
         {

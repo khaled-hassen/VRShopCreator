@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using Dummiesman;
+using StoreAsset;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,13 +21,14 @@ namespace UI.AssetsExplorer
 
         private SaveManager _saveManager;
 
-        public Action OnOpenAddNewAssetScreen;
-
         private void Awake()
         {
             _saveManager = FindObjectOfType<SaveManager>();
             if (_saveManager is null) throw new Exception("SaveManager not found in the scene! Application cannot continue.");
         }
+
+        public event Action OnOpenAddNewAssetScreen;
+        public event Action<StoreAssetData> OnEditItem;
 
         public void LoadUI() => RenderScreenContent(_saveManager.GetSaveDirectoryPath());
 
@@ -92,19 +96,60 @@ namespace UI.AssetsExplorer
             if (deleteBtnContainer is not null) deleteBtnContainer.GetComponent<Button>()?.onClick.AddListener(() => DeleteAsset(path));
         }
 
-        private void AddAssetToStore(string path)
+        private StoreAssetData LoadAssetData(string path)
         {
-            Debug.Log("Add asset to store: " + path);
+            var formatter = new BinaryFormatter();
+            var file = File.Open(Path.Combine(path, "data.dat"), FileMode.Open);
+            var data = (StoreAssetData)formatter.Deserialize(file);
+            file.Close();
+            return data;
         }
 
-        private void EditAsset(string path)
+        private void AddAssetToStore(string path)
         {
-            Debug.Log("Edit asset: " + path);
+            if (!Directory.Exists(path))
+            {
+                Debug.LogError("File not found: " + path);
+                return;
+            }
+
+            var data = LoadAssetData(path);
+            var model = new OBJLoader().Load(Path.Combine(path, "mesh.obj"));
+            if (model is null)
+            {
+                Debug.LogError("Failed to load Asset file at path: " + Path.Combine(path, "mesh.obj"));
+                return;
+            }
+
+            // fix scale
+            model.transform.localScale = Vector3.one * 0.01f;
+
+            // fix materials
+            for (var i = 0; i < model.transform.childCount; i++)
+            {
+                var child = model.transform.GetChild(i);
+                var childRenderer = child.GetComponent<Renderer>();
+                if (childRenderer is null) continue;
+                childRenderer.material.shader = Shader.Find("Universal Render Pipeline/Lit");
+            }
+
+            var storeAsset = model.AddComponent<StoreAsset.StoreAsset>();
+            storeAsset.assetData = data;
+            OnCloseWindowClick();
         }
+
+        private void EditAsset(string path) => OnEditItem?.Invoke(LoadAssetData(path));
 
         private void DeleteAsset(string path)
         {
-            Debug.Log("Delete asset: " + path);
+            Directory.Delete(path, true);
+            UpdateUI();
+        }
+
+        public void UpdateUI()
+        {
+            foreach (Transform child in contentContainer.transform) Destroy(child.gameObject);
+            LoadUI();
         }
 
         public void OpenAddNewAssetClick() => OnOpenAddNewAssetScreen?.Invoke();

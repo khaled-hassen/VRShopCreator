@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Player.Controllers.Scripts;
+using StoreAsset;
 using UI.AssetImporter;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -120,6 +122,7 @@ namespace UI
             // listen to events
             screen.OnCloseWindow += () => CloseWindowScreen(ref _assetsExplorerScreen);
             screen.OnOpenAddNewAssetScreen += OpenFileExplorer;
+            screen.OnEditItem += OpenEditScreen;
         }
 
         private void OpenFileExplorer()
@@ -132,7 +135,7 @@ namespace UI
 
             // listen to events
             screen.OnCloseWindow += () => CloseWindowScreen(ref _fileExplorerScreen);
-            screen.OnImportAsset += OpenImportProductAssetMenu;
+            screen.OnImportAsset += path => OpenImportProductAssetMenu(path);
         }
 
         private void CloseWindowScreen(ref UIScreen screen)
@@ -151,38 +154,48 @@ namespace UI
             screen = null;
         }
 
-        private void OpenImportProductAssetMenu(string filePath)
+        private void OpenImportProductAssetMenu(string filePath, [CanBeNull] StoreAssetData assetData = null)
         {
-            if (filePath is null) return;
+            if (filePath is null && assetData is null) return;
 
             if (_assetImportScreen is not null) DestroyScreen(ref _assetImportScreen);
             if (_decorationImportScreen is not null) DestroyScreen(ref _decorationImportScreen);
 
             var screen = Instantiate(productAssetImportPrefab, transform.position, transform.rotation, transform);
-            screen.LoadUI(filePath);
+            if (assetData is null) screen.LoadUI(filePath);
+            else screen.LoadUI(assetData);
             _assetImportScreen = screen;
             _activeScreens.Add(screen);
             RearrangeScreens();
 
             // listen to events
             screen.OnCloseWindow += () => CloseWindowScreen(ref _assetImportScreen);
-            screen.OnTabClicked += OpenImportDecorationAssetMenu;
+            screen.OnTabClicked += path => OpenImportDecorationAssetMenu(path);
+            screen.OnAssetImported += () => (_assetsExplorerScreen as AssetsExplorer.AssetsExplorer)?.UpdateUI();
         }
 
-        private void OpenImportDecorationAssetMenu(string filePath)
+        private void OpenImportDecorationAssetMenu(string filePath, [CanBeNull] StoreAssetData assetData = null)
         {
-            if (filePath is null || _decorationImportScreen is not null) return;
+            if ((filePath is null && assetData is null) || _decorationImportScreen is not null) return;
             if (_assetImportScreen is not null) DestroyScreen(ref _assetImportScreen);
 
             var screen = Instantiate(decorationAssetImportPrefab, transform.position, transform.rotation, transform);
-            screen.LoadUI(filePath);
+            if (assetData is null) screen.LoadUI(filePath);
+            else screen.LoadUI(assetData);
             _decorationImportScreen = screen;
             _activeScreens.Add(screen);
             RearrangeScreens();
 
             // listen to events
             screen.OnCloseWindow += () => CloseWindowScreen(ref _decorationImportScreen);
-            screen.OnTabClicked += OpenImportProductAssetMenu;
+            screen.OnTabClicked += path => OpenImportProductAssetMenu(path);
+            screen.OnAssetImported += () => (_assetsExplorerScreen as AssetsExplorer.AssetsExplorer)?.UpdateUI();
+        }
+
+        private void OpenEditScreen(StoreAssetData data)
+        {
+            if (data.assetSpecs.Count == 0) OpenImportDecorationAssetMenu(null, data);
+            else OpenImportProductAssetMenu(null, data);
         }
     }
 }
