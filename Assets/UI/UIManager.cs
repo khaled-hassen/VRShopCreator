@@ -87,6 +87,7 @@ namespace UI
             var previousPosition = transform.position;
             var totalWidth = 0f;
             RectTransform prevRect = null;
+
             foreach (var screen in _activeScreens)
             {
                 var xTranslate = 0f;
@@ -102,7 +103,7 @@ namespace UI
 
                 screen.transform.position = previousPosition + Vector3.right * xTranslate;
                 previousPosition = screen.transform.position;
-                prevRect = screen.GetComponent<RectTransform>();
+                prevRect = screenRect;
                 totalWidth += prevRect.rect.width + gapBetweenScreens;
             }
 

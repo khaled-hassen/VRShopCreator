@@ -66,7 +66,7 @@ namespace UI.AssetImporter
             file.Close();
             Debug.Log("Data file saved to: " + dataFilePath);
 
-            if (_oldAssetData is not null && _filePath is not null)
+            if (_oldAssetData is null && _filePath is not null)
             {
                 // save asset 3d model
                 var objSavePath = Path.Combine(saveDirectory, "mesh.obj");
