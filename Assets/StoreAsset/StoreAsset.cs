@@ -28,7 +28,6 @@ namespace StoreAsset
     {
         public StoreAssetData assetData { get; set; } = new();
 
-
         private void Awake()
         {
             var currentRotation = gameObject.transform.rotation;
