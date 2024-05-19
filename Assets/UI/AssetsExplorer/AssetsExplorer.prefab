@@ -468,7 +468,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 920.022, y: 0.001159668}
+  m_AnchoredPosition: {x: 920.022, y: -0.0024719238}
   m_SizeDelta: {x: 920, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &2982627612211965592
@@ -1720,7 +1720,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   font: {fileID: 11400000, guid: c13f0cf6102f5a340998ddda7ef7a0d0, type: 2}
   contentContainer: {fileID: 2091225409244079101}
-  fileSprite: {fileID: 21300000, guid: d56ade0e9be2bab4bb300cac63a97886, type: 3}
   rowPrefab: {fileID: 7712083498263590782, guid: bb3f62704f11c9544ae1876b1df26f12,
     type: 3}
   itemContainerPrefab: {fileID: 4400023368355865041, guid: 30bb8dd9bd7cb5c4abf67cb2eab35382,

@@ -9,18 +9,18 @@ namespace StoreAsset
     public class StoreAssetEditor : Editor
     {
         private UniqueId _id;
-        private SaveManager _saveManager;
+        private SaveManager.SaveManager _saveManager;
 
         private void OnEnable()
         {
-            _saveManager = FindObjectOfType<SaveManager>();
+            _saveManager = FindObjectOfType<SaveManager.SaveManager>();
             if (_saveManager is null) throw new Exception("SaveManager not found in the scene! Application cannot continue.");
 
             _id = target.GetComponent<UniqueId>();
             if (_id is null) throw new Exception("Missing UniqueId component on the object! Application cannot continue.");
 
             var storeAsset = (StoreAsset)target;
-            _saveManager.LoadAsset(_id.uuid, out var loadedData, out _);
+            _saveManager.LoadAsset(_id.uuid, out var loadedData);
             storeAsset.assetData = loadedData;
         }
 

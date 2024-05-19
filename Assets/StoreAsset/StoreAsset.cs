@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -17,6 +18,7 @@ namespace StoreAsset
     {
         public string assetName { get; set; }
         public List<StoreAssetSpec> assetSpecs { get; set; } = new();
+        [CanBeNull] public string modelPath { get; set; }
 
         public void AddSpecification(string name, string value)
         {
@@ -65,11 +67,11 @@ namespace StoreAsset
 
         private void LoadAssetData()
         {
-            var saveManager = FindObjectOfType<SaveManager>();
+            var saveManager = FindObjectOfType<SaveManager.SaveManager>();
             if (saveManager is null) throw new Exception("SaveManager not found in the scene! Application cannot continue.");
             var id = GetComponent<UniqueId>();
             if (id is null) throw new Exception("Missing UniqueId component on the object! Application cannot continue.");
-            saveManager.LoadAsset(id.uuid, out var loadedData, out _);
+            saveManager.LoadAsset(id.uuid, out var loadedData);
             assetData = loadedData;
         }
     }

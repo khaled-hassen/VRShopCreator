@@ -13,11 +13,11 @@ namespace UI.AssetImporter
 
         private string _filePath;
         [CanBeNull] private StoreAssetData _oldAssetData;
-        private SaveManager _saveManager;
+        private SaveManager.SaveManager _saveManager;
 
         private void Awake()
         {
-            _saveManager = FindObjectOfType<SaveManager>();
+            _saveManager = FindObjectOfType<SaveManager.SaveManager>();
             if (_saveManager is null) throw new Exception("SaveManager not found in the scene! Application cannot continue.");
         }
 

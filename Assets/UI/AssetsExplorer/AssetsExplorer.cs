@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Dummiesman;
+using SaveManager;
 using StoreAsset;
 using TMPro;
 using UnityEngine;
@@ -19,11 +20,11 @@ namespace UI.AssetsExplorer
         [SerializeField] private GameObject rowPrefab;
         [SerializeField] private GameObject itemContainerPrefab;
 
-        private SaveManager _saveManager;
+        private SaveManager.SaveManager _saveManager;
 
         private void Awake()
         {
-            _saveManager = FindObjectOfType<SaveManager>();
+            _saveManager = FindObjectOfType<SaveManager.SaveManager>();
             if (_saveManager is null) throw new Exception("SaveManager not found in the scene! Application cannot continue.");
         }
 
@@ -32,9 +33,9 @@ namespace UI.AssetsExplorer
 
         public void LoadUI() => RenderScreenContent(_saveManager.LoadAssets());
 
-        private void RenderScreenContent(SaveFile saveFile)
+        private void RenderScreenContent(AssetsSaveFile assetsSaveFile)
         {
-            var assets = saveFile.items;
+            var assets = assetsSaveFile.items;
             var rows = (assets.Count + ItemsPerRow - 1) / ItemsPerRow;
 
             for (var i = 0; i < rows; i++)
@@ -58,7 +59,7 @@ namespace UI.AssetsExplorer
             LayoutRebuilder.ForceRebuildLayoutImmediate(contentContainer.transform as RectTransform);
         }
 
-        private void RenderRowItems(IReadOnlyList<SaveFileItem> assets, int rowIndex, GameObject panelInstance)
+        private void RenderRowItems(IReadOnlyList<AssetSaveFileItem> assets, int rowIndex, GameObject panelInstance)
         {
             Enumerable.Range(rowIndex * ItemsPerRow, ItemsPerRow)
                 .TakeWhile(index => index < assets.Count)
@@ -66,7 +67,7 @@ namespace UI.AssetsExplorer
                 .ForEach(index => RenderDirectoryItem(panelInstance, assets[index]));
         }
 
-        private void RenderDirectoryItem(GameObject panel, SaveFileItem asset)
+        private void RenderDirectoryItem(GameObject panel, AssetSaveFileItem asset)
         {
             var itemContainer = Instantiate(
                 itemContainerPrefab,
@@ -105,7 +106,7 @@ namespace UI.AssetsExplorer
             return data;
         }
 
-        private void AddAssetToStore(SaveFileItem asset)
+        private void AddAssetToStore(AssetSaveFileItem asset)
         {
             var model = new OBJLoader().Load(asset.modelPath);
             if (model is null)
@@ -114,27 +115,15 @@ namespace UI.AssetsExplorer
                 return;
             }
 
-            // fix scale
-            model.transform.localScale = Vector3.one * 0.01f;
-
-            // fix materials
-            for (var i = 0; i < model.transform.childCount; i++)
-            {
-                var child = model.transform.GetChild(i);
-                var childRenderer = child.GetComponent<Renderer>();
-                if (childRenderer is null) continue;
-                childRenderer.material.shader = Shader.Find("Universal Render Pipeline/Lit");
-            }
-
             var id = model.AddComponent<UniqueId>();
             id.uuid = asset.id;
             model.AddComponent<StoreAsset.StoreAsset>();
             OnCloseWindowClick();
         }
 
-        private void EditAsset(SaveFileItem asset) => OnEditItem?.Invoke(LoadAssetData(asset.dataPath));
+        private void EditAsset(AssetSaveFileItem asset) => OnEditItem?.Invoke(LoadAssetData(asset.dataPath));
 
-        private void DeleteAsset(SaveFileItem asset)
+        private void DeleteAsset(AssetSaveFileItem asset)
         {
             _saveManager.DeleteAsset(asset.id);
             UpdateUI();
@@ -150,6 +139,8 @@ namespace UI.AssetsExplorer
 
         public void SaveStoreToDisk()
         {
+            _saveManager.SaveStoreState();
+            OnCloseWindowClick();
         }
     }
 }
