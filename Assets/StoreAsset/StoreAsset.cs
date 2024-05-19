@@ -16,7 +16,7 @@ namespace StoreAsset
     public class StoreAssetData
     {
         public string assetName { get; set; }
-        public List<StoreAssetSpec> assetSpecs { get; } = new();
+        public List<StoreAssetSpec> assetSpecs { get; set; } = new();
 
         public void AddSpecification(string name, string value)
         {
@@ -29,6 +29,12 @@ namespace StoreAsset
         public StoreAssetData assetData { get; set; } = new();
 
         private void Awake()
+        {
+            SetupObjectXrInteraction();
+            LoadAssetData();
+        }
+
+        private void SetupObjectXrInteraction()
         {
             var currentRotation = gameObject.transform.rotation;
             var currentScale = gameObject.transform.localScale;
@@ -55,6 +61,16 @@ namespace StoreAsset
             var interactable = gameObject.AddComponent<XRGrabInteractable>();
             interactable.interactionLayers = 2;
             interactable.movementType = XRBaseInteractable.MovementType.VelocityTracking;
+        }
+
+        private void LoadAssetData()
+        {
+            var saveManager = FindObjectOfType<SaveManager>();
+            if (saveManager is null) throw new Exception("SaveManager not found in the scene! Application cannot continue.");
+            var id = GetComponent<UniqueId>();
+            if (id is null) throw new Exception("Missing UniqueId component on the object! Application cannot continue.");
+            saveManager.LoadAsset(id.uuid, out var loadedData, out _);
+            assetData = loadedData;
         }
     }
 }

@@ -30,12 +30,12 @@ namespace UI.AssetsExplorer
         public event Action OnOpenAddNewAssetScreen;
         public event Action<StoreAssetData> OnEditItem;
 
-        public void LoadUI() => RenderScreenContent(_saveManager.GetSaveDirectoryPath());
+        public void LoadUI() => RenderScreenContent(_saveManager.LoadAssets());
 
-        private void RenderScreenContent(string path)
+        private void RenderScreenContent(SaveFile saveFile)
         {
-            var assets = Directory.GetDirectories(path);
-            var rows = (assets.Length + ItemsPerRow - 1) / ItemsPerRow;
+            var assets = saveFile.items;
+            var rows = (assets.Count + ItemsPerRow - 1) / ItemsPerRow;
 
             for (var i = 0; i < rows; i++)
             {
@@ -58,7 +58,7 @@ namespace UI.AssetsExplorer
             LayoutRebuilder.ForceRebuildLayoutImmediate(contentContainer.transform as RectTransform);
         }
 
-        private void RenderRowItems(IReadOnlyList<string> assets, int rowIndex, GameObject panelInstance)
+        private void RenderRowItems(IReadOnlyList<SaveFileItem> assets, int rowIndex, GameObject panelInstance)
         {
             Enumerable.Range(rowIndex * ItemsPerRow, ItemsPerRow)
                 .TakeWhile(index => index < assets.Count)
@@ -66,7 +66,7 @@ namespace UI.AssetsExplorer
                 .ForEach(index => RenderDirectoryItem(panelInstance, assets[index]));
         }
 
-        private void RenderDirectoryItem(GameObject panel, string path)
+        private void RenderDirectoryItem(GameObject panel, SaveFileItem asset)
         {
             var itemContainer = Instantiate(
                 itemContainerPrefab,
@@ -80,44 +80,37 @@ namespace UI.AssetsExplorer
             if (assetName is not null)
             {
                 var text = assetName.GetComponent<TextMeshProUGUI>();
-                if (text is not null) text.text = Path.GetFileName(path);
+                if (text is not null) text.text = asset.name;
             }
 
             var actionsContainer = itemContainer.transform.Find("ActionsContainer");
             if (actionsContainer is null) return;
 
             var importBtnContainer = actionsContainer.Find("Import");
-            if (importBtnContainer is not null) importBtnContainer.GetComponent<Button>()?.onClick.AddListener(() => AddAssetToStore(path));
+            if (importBtnContainer is not null) importBtnContainer.GetComponent<Button>()?.onClick.AddListener(() => AddAssetToStore(asset));
 
             var editBtnContainer = actionsContainer.Find("Edit");
-            if (editBtnContainer is not null) editBtnContainer.GetComponent<Button>()?.onClick.AddListener(() => EditAsset(path));
+            if (editBtnContainer is not null) editBtnContainer.GetComponent<Button>()?.onClick.AddListener(() => EditAsset(asset));
 
             var deleteBtnContainer = actionsContainer.Find("Delete");
-            if (deleteBtnContainer is not null) deleteBtnContainer.GetComponent<Button>()?.onClick.AddListener(() => DeleteAsset(path));
+            if (deleteBtnContainer is not null) deleteBtnContainer.GetComponent<Button>()?.onClick.AddListener(() => DeleteAsset(asset));
         }
 
         private StoreAssetData LoadAssetData(string path)
         {
             var formatter = new BinaryFormatter();
-            var file = File.Open(Path.Combine(path, "data.dat"), FileMode.Open);
+            var file = File.Open(path, FileMode.Open);
             var data = (StoreAssetData)formatter.Deserialize(file);
             file.Close();
             return data;
         }
 
-        private void AddAssetToStore(string path)
+        private void AddAssetToStore(SaveFileItem asset)
         {
-            if (!Directory.Exists(path))
-            {
-                Debug.LogError("File not found: " + path);
-                return;
-            }
-
-            var data = LoadAssetData(path);
-            var model = new OBJLoader().Load(Path.Combine(path, "mesh.obj"));
+            var model = new OBJLoader().Load(asset.modelPath);
             if (model is null)
             {
-                Debug.LogError("Failed to load Asset file at path: " + Path.Combine(path, "mesh.obj"));
+                Debug.LogError("Failed to load Asset file at path: " + asset.modelPath);
                 return;
             }
 
@@ -133,16 +126,17 @@ namespace UI.AssetsExplorer
                 childRenderer.material.shader = Shader.Find("Universal Render Pipeline/Lit");
             }
 
-            var storeAsset = model.AddComponent<StoreAsset.StoreAsset>();
-            storeAsset.assetData = data;
+            var id = model.AddComponent<UniqueId>();
+            id.uuid = asset.id;
+            model.AddComponent<StoreAsset.StoreAsset>();
             OnCloseWindowClick();
         }
 
-        private void EditAsset(string path) => OnEditItem?.Invoke(LoadAssetData(path));
+        private void EditAsset(SaveFileItem asset) => OnEditItem?.Invoke(LoadAssetData(asset.dataPath));
 
-        private void DeleteAsset(string path)
+        private void DeleteAsset(SaveFileItem asset)
         {
-            Directory.Delete(path, true);
+            _saveManager.DeleteAsset(asset.id);
             UpdateUI();
         }
 
