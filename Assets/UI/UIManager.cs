@@ -84,7 +84,7 @@ namespace UI
         {
             if (_activeScreens.Count == 0) return;
 
-            var previousPosition = transform.position;
+            var previousPosition = Vector3.zero;
             var totalWidth = 0f;
             RectTransform prevRect = null;
 
@@ -101,15 +101,15 @@ namespace UI
                     xTranslate = (halfWidth + prevHalfWidth + gapBetweenScreens) * localScaleX;
                 }
 
-                screen.transform.position = previousPosition + Vector3.right * xTranslate;
-                previousPosition = screen.transform.position;
+                screen.transform.localPosition = previousPosition + Vector3.right * xTranslate;
+                previousPosition = screen.transform.localPosition;
                 prevRect = screenRect;
                 totalWidth += prevRect.rect.width + gapBetweenScreens;
             }
 
             totalWidth -= gapBetweenScreens + _activeScreens.First().GetComponent<RectTransform>().rect.width;
 
-            foreach (var screen in _activeScreens) screen.transform.position += Vector3.left * screen.transform.localScale.x * (totalWidth / 2);
+            foreach (var screen in _activeScreens) screen.transform.localPosition += Vector3.left * screen.transform.localScale.x * (totalWidth / 2);
         }
 
         private void OpenAssetsExplorer()
