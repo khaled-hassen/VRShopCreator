@@ -118,6 +118,7 @@ namespace UI.AssetsExplorer
             var id = model.AddComponent<UniqueId>();
             id.uuid = asset.id;
             model.AddComponent<StoreAsset.StoreAsset>();
+            model.AddComponent<AssetPopup.AssetPopup>();
             OnCloseWindowClick();
         }
 

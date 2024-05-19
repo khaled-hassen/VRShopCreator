@@ -134,6 +134,7 @@ namespace SaveManager
                     if (model is null) continue;
                     var id = model.AddComponent<UniqueId>();
                     id.uuid = item.id;
+                    model.AddComponent<AssetPopup.AssetPopup>();
                     asset = model.AddComponent<StoreAsset.StoreAsset>();
                 }
 

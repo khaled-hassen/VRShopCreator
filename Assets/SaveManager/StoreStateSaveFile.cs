@@ -13,7 +13,7 @@ namespace SaveManager
         public Quaternion rotation;
         [CanBeNull] public string modelPath;
 
-        public StoreStateSaveFileItem(string id, Vector3 position, Quaternion rotation, [CanBeNull] string modelPath = null)
+        public StoreStateSaveFileItem(string id, Vector3 position, Quaternion rotation, [CanBeNull] string modelPath)
         {
             this.id = id;
             this.position = position;
