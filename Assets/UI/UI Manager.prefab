@@ -47,8 +47,8 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   cameraDistance: 1.1
   centerTime: 0.3
-  uiYPosition: 1.2
-  windowTiltAngle: 30
+  uiYPosition: 1.4
+  windowTiltAngle: 20
   fileExplorerPrefab: {fileID: 1024221631963837051, guid: a89df09e3214eba4ca51535c2e7c431a,
     type: 3}
   assetsExplorerPrefab: {fileID: -703547919815356625, guid: bf054c614850e1640b1f66a151a412e1,

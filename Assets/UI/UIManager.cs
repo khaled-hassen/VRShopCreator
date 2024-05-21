@@ -14,8 +14,8 @@ namespace UI
         [SerializeField] private Camera mainCamera;
         [SerializeField] private float cameraDistance = 1.1f;
         [SerializeField] private float centerTime = 0.3f;
-        [SerializeField] private float uiYPosition = 1.2f;
-        [SerializeField] private float windowTiltAngle = 30f;
+        [SerializeField] private float uiYPosition = 1.4f;
+        [SerializeField] private float windowTiltAngle = 20f;
         [SerializeField] private FileExplorer.FileExplorer fileExplorerPrefab;
         [SerializeField] private AssetsExplorer.AssetsExplorer assetsExplorerPrefab;
         [SerializeField] private ProductAssetImport productAssetImportPrefab;

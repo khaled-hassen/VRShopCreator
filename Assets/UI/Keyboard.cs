@@ -7,9 +7,10 @@ namespace UI
 {
     public class Keyboard : MonoBehaviour
     {
-        private readonly float _distance = 0.5f;
-        private readonly float _verticalOffset = -0.2f;
+        private const float Distance = 0.8f;
+        private const float VerticalOffset = -0.4f;
         private TMP_InputField _inputField;
+        private bool _isKeyboardOpen;
         private Transform _positionSource;
 
         private void Awake()
@@ -19,6 +20,16 @@ namespace UI
             if (Camera.main != null) _positionSource = Camera.main.transform;
         }
 
+        private void Update()
+        {
+            if (!_isKeyboardOpen) return;
+            var direction = _positionSource.forward;
+            direction.y = 0;
+            direction.Normalize();
+            var targetPosition = _positionSource.position + direction * Distance + Vector3.up * VerticalOffset;
+            NonNativeKeyboard.Instance.RepositionKeyboard(targetPosition);
+        }
+
         private void OpenKeyboard()
         {
             NonNativeKeyboard.Instance.Close();
@@ -26,20 +37,17 @@ namespace UI
             NonNativeKeyboard.Instance.InputField = _inputField;
             NonNativeKeyboard.Instance.PresentKeyboard(_inputField.text);
 
-            var direction = _positionSource.forward;
-            direction.y = 0;
-            direction.Normalize();
-
-            var targetPosition = _positionSource.position + direction * _distance + Vector3.up * _verticalOffset;
-            NonNativeKeyboard.Instance.RepositionKeyboard(targetPosition);
             SetCursorIndicatorAlpha(1);
             NonNativeKeyboard.Instance.OnClosed += CloseKeyboard;
+
+            _isKeyboardOpen = true;
         }
 
         private void CloseKeyboard(object _, EventArgs __)
         {
             SetCursorIndicatorAlpha(0);
             NonNativeKeyboard.Instance.OnClosed -= CloseKeyboard;
+            _isKeyboardOpen = false;
         }
 
         public void SetCursorIndicatorAlpha(float alpha)
