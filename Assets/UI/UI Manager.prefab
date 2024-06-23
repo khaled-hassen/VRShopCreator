@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2138068951427586656
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4845997940920321289}
+  - component: {fileID: -8132773563410613012}
+  m_Layer: 0
+  m_Name: UI Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4845997940920321289
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138068951427586656}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.92775285, y: 0.8546903, z: 1.0773343}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-8132773563410613012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138068951427586656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 260ad2e866c144c4987b46ed260a61e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  cameraDistance: 1.1
+  centerTime: 0.3
+  uiYPosition: 1.4
+  windowTiltAngle: 20
+  fileExplorerPrefab: {fileID: 1024221631963837051, guid: a89df09e3214eba4ca51535c2e7c431a,
+    type: 3}
+  assetsExplorerPrefab: {fileID: -703547919815356625, guid: bf054c614850e1640b1f66a151a412e1,
+    type: 3}
+  productAssetImportPrefab: {fileID: 2657217988355689644, guid: 0e65d9d2fde8c1a45af65eb0f5e9b0cd,
+    type: 3}
+  decorationAssetImportPrefab: {fileID: -7725911231311203342, guid: a30030d9a63eb20479284e3792ed80ff,
+    type: 3}
+  menuInputAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Menu Input
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 185b9125-deeb-4595-8f18-44423e8743d1
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: -7971571186471155282, guid: c348712bda248c246b8c49b3db54643f,
+      type: 3}
+  interactionManager: {fileID: 0}
+  gapBetweenScreens: 30
